@@ -1,18 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BahanFragment"
-    android:background="#789ABC">
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context=".BahanFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/lv1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8">
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="BAHAN"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:textSize="30sp"/>
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/etNamaBahan"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Nama bahan"/>
+        <EditText
+            android:id="@+id/etKategori"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Kategori"/>
+    </LinearLayout>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/btnTambahData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="16dp"
+        android:text="Tambah Data" />
+</LinearLayout>
