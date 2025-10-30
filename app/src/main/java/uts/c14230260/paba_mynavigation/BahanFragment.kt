@@ -75,8 +75,16 @@ class BahanFragment : Fragment() {
             val dtAkhir = lastNumber + 1
             val etNamaBahan = view.findViewById<EditText>(R.id.etNamaBahan)
             val etKategori = view.findViewById<EditText>(R.id.etKategori)
-            data.add("$dtAkhir Nama bahan: ${etNamaBahan.text}, Kategori: ${etKategori.text}")
-            lvAdapter.notifyDataSetChanged() // update/refresh data
+            if (etNamaBahan.text.toString().trim().isEmpty() || etKategori.text.toString().trim().isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Data baru tidak boleh kosong",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                data.add("$dtAkhir Nama bahan: ${etNamaBahan.text}, Kategori: ${etKategori.text}")
+                lvAdapter.notifyDataSetChanged() // update/refresh data
+            }
         }
 
         _lv1.setOnItemClickListener { parent, view, position, id ->
@@ -89,7 +97,7 @@ class BahanFragment : Fragment() {
 
         val gestureDetector = GestureDetector(
             requireContext(),
-            object : GestureDetector.SimpleOnGestureListener() { // TODO: gestureDetector is not attached to any view
+            object : GestureDetector.SimpleOnGestureListener() {
                 override fun onDoubleTap(e: MotionEvent): Boolean {
                     val position = _lv1.pointToPosition(e.x.toInt(), e.y.toInt())
                     if (position != ListView.INVALID_POSITION) {
@@ -174,19 +182,28 @@ class BahanFragment : Fragment() {
         tvOld.text = "Data lama: $oldValue"
         tvOld.textSize = 16f
 
-        val etNew = EditText(requireContext())
-        etNew.hint = "Masukkan data baru"
-        etNew.setText(oldValue)
+        val etNewNamaBahan = EditText(requireContext())
+        etNewNamaBahan.hint = "Masukkan nama bahan baru"
+
+        val etNewKategori = EditText(requireContext())
+        etNewKategori.hint = "Masukkan kategori baru"
 
         layout.addView(tvOld)
-        layout.addView(etNew)
+        layout.addView(etNewNamaBahan)
+        layout.addView(etNewKategori)
 
-        builder.setView(layout) // TODO: This code block seems incomplete. It's missing `showActionDialog` implementation.
+        builder.setView(layout)
 
         builder.setPositiveButton("Simpan") { dialog, _ ->
-            val newValue = etNew.text.toString().trim()
+            val lastItem = data.getOrNull(data.size - 1) ?: "0"
+            val lastNumberStr = lastItem.split(" ").firstOrNull() ?: "0"
+            val lastNumber = try {
+                Integer.parseInt(lastNumberStr)
+            } catch (e: NumberFormatException) { 0 }
+            val dtAkhir = lastNumber + 1
+            val newValue = "$dtAkhir Nama bahan: ${etNewNamaBahan.text.toString().trim()}, Kategori: ${etNewKategori.text.toString().trim()}"
 
-            if (newValue.isNotEmpty()) {
+            if (newValue.isNotEmpty() || etNewNamaBahan.text.toString().trim().isNotEmpty() || etNewKategori.text.toString().trim().isNotEmpty()) {
                 data[position] = newValue
                 adapter.notifyDataSetChanged()
                 Toast.makeText(
