@@ -6,20 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10"
+    android:weightSum="1"
     tools:context=".BahanFragment">
 
     <ListView
         android:id="@+id/lv1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8">
+        android:layout_weight="1">
     </ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        >
         <EditText
             android:id="@+id/etNamaBahan"
             android:layout_width="0dp"
@@ -33,12 +33,36 @@
             android:layout_weight="1"
             android:hint="Kategori"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnTambahData"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_margin="16dp"
-        android:text="Tambah Data" />
+        >
+        <EditText
+            android:id="@+id/etLinkGambar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Link Gambar"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginHorizontal="8sp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/outline_add_shopping_cart_24"/>
+        <Button
+            android:id="@+id/btnTambahData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="16dp"
+            android:text="Add to cart" />
+    </LinearLayout>
+
 </LinearLayout>
