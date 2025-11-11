@@ -2,4 +2,50 @@
     <string name="app_name">PABA_MyNavigation</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="bahan">
+        <item>Wortel</item>
+        <item>Ayam</item>
+        <item>Bawang</item>
+        <item>Jagung</item>
+        <item>Tomat</item>
+        <item>Timun</item>
+        <item>Kelapa</item>
+        <item>Apel</item>
+        <item>Singkong</item>
+        <item>Babi</item>
+        <item>Kecap</item>
+        <item>Sapi</item>
+        <item>Ikan</item>
+        <item>Tempe</item>
+        <item>Tahu</item>
+        <item>Kedelai</item>
+        <item>Kopi</item>
+        <item>Milo</item>
+        <item>Anggur</item>
+        <item>Kentang</item>
+    </string-array>
+
+    <string-array name="kategori">
+        <item>Sayur</item>
+        <item>Daging</item>
+        <item>Bumbu</item>
+        <item>Sayur</item>
+        <item>Buah</item>
+        <item>Buah</item>
+        <item>Buah</item>
+        <item>Buah</item>
+        <item>Sayur</item>
+        <item>Daging</item>
+        <item>Bahan</item>
+        <item>Daging</item>
+        <item>Daging</item>
+        <item>Jadian</item>
+        <item>Kacang</item>
+        <item>Bahan</item>
+        <item>Jadian</item>
+        <item>Buah</item>
+        <item>Sayur</item>
+    </string-array>
+
 </resources>

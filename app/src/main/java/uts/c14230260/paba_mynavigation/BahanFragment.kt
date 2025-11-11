@@ -31,6 +31,31 @@ class BahanFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+
+    // Latihan pert 13
+    private var _bahan : Array<Array<String>> = arrayOf(
+        arrayOf("Wortel", "Sayur"),
+        arrayOf("Ayam", "Daging"),
+        arrayOf("Bawang", "Bumbu"),
+        arrayOf("Jagung", "Sayur"),
+        arrayOf("Tomat", "Buah"),
+        arrayOf("Timun", "Buah"),
+        arrayOf("Kelapa", "Buah"),
+        arrayOf("Apel", "Buah"),
+        arrayOf("Singkong", "Sayur"),
+        arrayOf("Babi", "Daging"),
+        arrayOf("Kecap", "Bahan"),
+        arrayOf("Sapi", "Daging"),
+        arrayOf("Ikan", "Daging"),
+        arrayOf("Tempe", "Jadian"),
+        arrayOf("Tahu", "Jadian"),
+        arrayOf("Kedelai", "Kacang"),
+        arrayOf("Kopi", "Bahan"),
+        arrayOf("Milo", "Jadian"),
+        arrayOf("Anggur", "Buah"),
+        arrayOf("Kentang", "Sayur"),
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
