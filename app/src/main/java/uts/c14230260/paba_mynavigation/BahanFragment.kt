@@ -1,5 +1,7 @@
 package uts.c14230260.paba_mynavigation
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.GestureDetector
 import androidx.fragment.app.Fragment
@@ -15,6 +17,11 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.edit
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,34 +34,22 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class BahanFragment : Fragment() {
+
+    // Baru
+    private var _namaBahan : MutableList<String> = emptyList<String>().toMutableList()
+    private var _kategoriBahan : MutableList<String> = emptyList<String>().toMutableList()
+    private var _linkGambar : MutableList<String> = emptyList<String>().toMutableList()
+    lateinit var sp : SharedPreferences
+
+    private var arBahan = arrayListOf<dcBahan>()
+    private lateinit var _rvBahan : RecyclerView
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
 
     // Latihan pert 13
-    private var _bahan : Array<Array<String>> = arrayOf(
-        arrayOf("Wortel", "Sayur"),
-        arrayOf("Ayam", "Daging"),
-        arrayOf("Bawang", "Bumbu"),
-        arrayOf("Jagung", "Sayur"),
-        arrayOf("Tomat", "Buah"),
-        arrayOf("Timun", "Buah"),
-        arrayOf("Kelapa", "Buah"),
-        arrayOf("Apel", "Buah"),
-        arrayOf("Singkong", "Sayur"),
-        arrayOf("Babi", "Daging"),
-        arrayOf("Kecap", "Bahan"),
-        arrayOf("Sapi", "Daging"),
-        arrayOf("Ikan", "Daging"),
-        arrayOf("Tempe", "Jadian"),
-        arrayOf("Tahu", "Jadian"),
-        arrayOf("Kedelai", "Kacang"),
-        arrayOf("Kopi", "Bahan"),
-        arrayOf("Milo", "Jadian"),
-        arrayOf("Anggur", "Buah"),
-        arrayOf("Kentang", "Sayur"),
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,69 +70,127 @@ class BahanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var data = mutableListOf<String>()
-        data.addAll(listOf(
-            "1 Nama bahan: Wortel, Kategori: Sayur",
-            "2 Nama bahan: Ayam, Kategori: Daging",
-            "3 Nama bahan: Bawang, Kategori: Bumbu"
-        ))
+        // Baru
+        sp = requireContext().getSharedPreferences("SP_Bahan", MODE_PRIVATE)
 
-        val lvAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            data
-        )
-        val _lv1 = view.findViewById<ListView>(R.id.lv1)
-        _lv1.adapter = lvAdapter
+        val gson = Gson()
+        val isiSP = sp.getString("spBahan", null)
+        val type = object : TypeToken<List<dcBahan>>() {}.type
+        if (isiSP != null) {
+            arBahan = gson.fromJson(isiSP, type)
+        }
 
-        val _btnTambah = view.findViewById<Button>(R.id.btnTambahData)
-        _btnTambah.setOnClickListener {
-            val lastItem = data.getOrNull(data.size - 1) ?: "0"
-            val lastNumberStr = lastItem.split(" ").firstOrNull() ?: "0"
-            val lastNumber = try {
-                Integer.parseInt(lastNumberStr)
-            } catch (e: NumberFormatException) { 0 }
-            val dtAkhir = lastNumber + 1
-            val etNamaBahan = view.findViewById<EditText>(R.id.etNamaBahan)
-            val etKategori = view.findViewById<EditText>(R.id.etKategori)
-            if (etNamaBahan.text.toString().trim().isEmpty() || etKategori.text.toString().trim().isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Data baru tidak boleh kosong",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                data.add("$dtAkhir Nama bahan: ${etNamaBahan.text}, Kategori: ${etKategori.text}")
-                lvAdapter.notifyDataSetChanged() // update/refresh data
+        _rvBahan = view.findViewById(R.id.rvBahan)
+        if (arBahan.size == 0) {
+            SiapkanData()
+        } else {
+            arBahan.forEach {
+                _namaBahan.add(it.nama)
+                _kategoriBahan.add(it.kategori)
+                _linkGambar.add(it.linkGambar)
             }
+            arBahan.clear()
         }
+        TambahData()
+        TampilkanData()
 
-        _lv1.setOnItemClickListener { parent, view, position, id ->
-            Toast.makeText(
-                requireContext(),
-                data[position],
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        // End baru
 
-        val gestureDetector = GestureDetector(
-            requireContext(),
-            object : GestureDetector.SimpleOnGestureListener() {
-                override fun onDoubleTap(e: MotionEvent): Boolean {
-                    val position = _lv1.pointToPosition(e.x.toInt(), e.y.toInt())
-                    if (position != ListView.INVALID_POSITION) {
-                        val selectedItem = data[position]
-                        showActionDialog(position, selectedItem, data, lvAdapter)
-                    }
-                    return true
-                }
+//        // Latihan pert 13 (ListView)
+//        var data = mutableListOf<String>()
+//        data.addAll(listOf(
+//            "1 Nama bahan: Wortel, Kategori: Sayur",
+//            "2 Nama bahan: Ayam, Kategori: Daging",
+//            "3 Nama bahan: Bawang, Kategori: Bumbu"
+//        ))
+//
+//        val lvAdapter = ArrayAdapter(
+//            requireContext(),
+//            android.R.layout.simple_list_item_1,
+//            data
+//        )
+//        val _lv1 = view.findViewById<ListView>(R.id.rvBahan)
+//        _lv1.adapter = lvAdapter
+//
+//        val _btnTambah = view.findViewById<Button>(R.id.btnTambahData)
+//        _btnTambah.setOnClickListener {
+//            val lastItem = data.getOrNull(data.size - 1) ?: "0"
+//            val lastNumberStr = lastItem.split(" ").firstOrNull() ?: "0"
+//            val lastNumber = try {
+//                Integer.parseInt(lastNumberStr)
+//            } catch (e: NumberFormatException) { 0 }
+//            val dtAkhir = lastNumber + 1
+//            val etNamaBahan = view.findViewById<EditText>(R.id.etNamaBahan)
+//            val etKategori = view.findViewById<EditText>(R.id.etKategori)
+//            if (etNamaBahan.text.toString().trim().isEmpty() || etKategori.text.toString().trim().isEmpty()) {
+//                Toast.makeText(
+//                    requireContext(),
+//                    "Data baru tidak boleh kosong",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else {
+//                data.add("$dtAkhir Nama bahan: ${etNamaBahan.text}, Kategori: ${etKategori.text}")
+//                lvAdapter.notifyDataSetChanged() // update/refresh data
+//            }
+//        }
+//
+//        _lv1.setOnItemClickListener { parent, view, position, id ->
+//            Toast.makeText(
+//                requireContext(),
+//                data[position],
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//
+//        val gestureDetector = GestureDetector(
+//            requireContext(),
+//            object : GestureDetector.SimpleOnGestureListener() {
+//                override fun onDoubleTap(e: MotionEvent): Boolean {
+//                    val position = _lv1.pointToPosition(e.x.toInt(), e.y.toInt())
+//                    if (position != ListView.INVALID_POSITION) {
+//                        val selectedItem = data[position]
+//                        showActionDialog(position, selectedItem, data, lvAdapter)
+//                    }
+//                    return true
+//                }
+//            }
+//        )
+//
+//        // asumsi
+//        _lv1.setOnTouchListener { _, event ->
+//            gestureDetector.onTouchEvent(event)
+//        }
+    }
+
+    fun SiapkanData() {
+        _namaBahan = resources.getStringArray(R.array.namaBahan).toMutableList()
+        _kategoriBahan = resources.getStringArray(R.array.kategoriBahan).toMutableList()
+        _linkGambar = resources.getStringArray(R.array.gambarBahan).toMutableList()
+    }
+
+    fun TambahData() {
+        val gson = Gson()
+        sp.edit {
+            arBahan.clear()
+
+            for (position in _namaBahan.indices) {
+                val data = dcBahan(
+                    _namaBahan[position],
+                    _kategoriBahan[position],
+                    _linkGambar[position]
+                )
+                arBahan.add(data)
             }
-        )
 
-        // asumsi
-        _lv1.setOnTouchListener { _, event ->
-            gestureDetector.onTouchEvent(event)
+            val json = gson.toJson(arBahan)
+            putString("spBahan", json)
         }
+    }
+
+    fun TampilkanData() {
+        _rvBahan.layoutManager = LinearLayoutManager(requireContext())
+        val adapterWayang = adapterRecView(arBahan)
+        _rvBahan.adapter = adapterWayang
     }
 
     companion object {
