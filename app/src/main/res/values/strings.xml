@@ -3,8 +3,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string-array name="bahan">
-        <item>Wortel</item>
+    <string-array name="namaBahan">
+        <item>Bayam</item>
         <item>Ayam</item>
         <item>Bawang</item>
         <item>Jagung</item>
@@ -26,7 +26,7 @@
         <item>Kentang</item>
     </string-array>
 
-    <string-array name="kategori">
+    <string-array name="kategoriBahan">
         <item>Sayur</item>
         <item>Daging</item>
         <item>Bumbu</item>
@@ -41,11 +41,35 @@
         <item>Daging</item>
         <item>Daging</item>
         <item>Jadian</item>
+        <item>Jadian</item>
         <item>Kacang</item>
         <item>Bahan</item>
         <item>Jadian</item>
         <item>Buah</item>
         <item>Sayur</item>
+    </string-array>
+
+    <string-array name="gambarBahan">
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
+        <item>https://placehold.co/200x200</item>
     </string-array>
 
 </resources>
